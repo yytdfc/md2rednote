@@ -1,0 +1,146 @@
+import type { PageConfig } from './types'
+import { themes } from './config'
+
+export function generateStyles(cfg: PageConfig): string {
+  const theme = themes[cfg.theme]
+
+  const pageNumberContent = `counter(page) " / " counter(pages)`
+  const pageNumberStyle = cfg.showPageNumber
+    ? `
+      @${cfg.pageNumberPosition} {
+        content: ${pageNumberContent};
+        font-size: ${cfg.fontSize * 0.75}px;
+        color: ${theme.quote};
+      }`
+    : ''
+
+  return `
+@page {
+  size: ${cfg.pageWidth}px ${cfg.pageHeight}px;
+  margin: ${cfg.pageMargin}px;
+  ${pageNumberStyle}
+}
+body {
+  font-family: "${cfg.fontFamily}", "Source Han Serif SC VF", "PingFang SC", sans-serif;
+  font-size: ${cfg.fontSize}px;
+  line-height: ${cfg.lineHeight};
+  color: ${cfg.textColor};
+  background: ${cfg.bgColor};
+}
+.cover {
+  page: cover;
+  break-after: page;
+}
+@page cover {
+  size: ${cfg.pageWidth}px ${cfg.pageHeight}px;
+  margin: 0;
+  @top-center { content: none; }
+  @bottom-left { content: none; }
+  @bottom-center { content: none; }
+  @bottom-right { content: none; }
+}
+.cover {
+  position: relative;
+  height: ${cfg.pageHeight}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: ${cfg.pageMargin}px;
+  right: ${cfg.pageMargin}px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, ${cfg.coverColor}80, transparent);
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  top: 80%;
+  left: ${cfg.pageMargin}px;
+  right: ${cfg.pageMargin}px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, ${cfg.coverColor}80, transparent);
+}
+.cover h1 {
+  font-family: "${cfg.coverFontFamily}", "Source Han Serif SC VF", "PingFang SC", sans-serif;
+  font-size: ${cfg.coverFontSize}px;
+  font-weight: bold;
+  color: ${cfg.coverColor};
+  line-height: 1.4;
+  text-align: center;
+  margin: 0;
+  padding: ${cfg.pageMargin * 1.5}px ${cfg.pageMargin}px;
+}
+.cover .quote-left {
+  position: absolute;
+  top: 25%;
+  left: 8%;
+  font-size: ${cfg.coverFontSize * 1.5}px;
+  color: ${cfg.coverColor};
+  opacity: 0.2;
+}
+.cover .quote-right {
+  position: absolute;
+  bottom: 25%;
+  right: 8%;
+  font-size: ${cfg.coverFontSize * 1.5}px;
+  color: ${cfg.coverColor};
+  opacity: 0.2;
+}
+h1 { font-size: ${cfg.fontSize * 1.75}px; color: ${cfg.headingColor}; break-after: avoid; margin-top: 0; }
+h2 { font-size: ${cfg.fontSize * 1.375}px; color: ${cfg.headingColor}; break-after: avoid; margin-top: 1.5em; }
+h3 { font-size: ${cfg.fontSize * 1.125}px; color: ${cfg.headingColor}; break-after: avoid; }
+strong, b { color: ${cfg.boldColor}; }
+p { margin-bottom: 1em; text-align: justify; widows: 2; orphans: 2; }
+ul, ol { margin: 1em 0; padding-left: 2em; }
+li { margin-bottom: 0.5em; break-inside: avoid; }
+blockquote {
+  border-left: 4px solid ${theme.accent};
+  padding-left: 16px;
+  margin: 1em 0;
+  color: ${theme.quote};
+  font-style: italic;
+  break-inside: avoid;
+}
+pre {
+  background: ${theme.codeBg};
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  break-inside: avoid;
+  font-size: ${cfg.fontSize * 0.875}px;
+}
+code {
+  font-family: 'Monaco', 'Menlo', monospace;
+  background: ${theme.codeBg};
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: ${cfg.fontSize * 0.875}px;
+}
+pre code { background: none; padding: 0; }
+.page-break { break-after: page; }
+${
+  cfg.showPageLines
+    ? `
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::before,
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::after {
+  content: '';
+  position: absolute;
+  left: ${cfg.pageMargin}px;
+  right: ${cfg.pageMargin}px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, ${cfg.headingColor}60, transparent);
+}
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::before {
+  top: ${cfg.pageMargin * 0.7}px;
+}
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::after {
+  bottom: ${cfg.pageMargin}px;
+}`
+    : ''
+}
+`
+}

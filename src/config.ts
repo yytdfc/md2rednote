@@ -1,0 +1,49 @@
+import type { PageConfig, ThemeColors, ThemeName } from './types'
+
+export const themes: Record<ThemeName, ThemeColors> = {
+  light: { bg: '#ffffff', text: '#333333', accent: '#e74c3c', quote: '#666666', headingColor: '#e74c3c', boldColor: '#d35400', codeBg: '#f5f5f5' },
+  cream: { bg: '#FFFEF5', text: '#1a1a1a', accent: '#e74c3c', quote: '#666666', headingColor: '#c0392b', boldColor: '#e67e22', codeBg: '#f5f0e6' },
+  paper: { bg: '#F9F6F2', text: '#2d2d2d', accent: '#d35400', quote: '#777777', headingColor: '#c0392b', boldColor: '#e74c3c', codeBg: '#efe9e1' },
+  dark: { bg: '#1a1a2e', text: '#eaeaea', accent: '#ff6b6b', quote: '#aaaaaa', headingColor: '#ff6b6b', boldColor: '#ffa502', codeBg: '#2d2d44' },
+  midnight: { bg: '#0d1117', text: '#c9d1d9', accent: '#58a6ff', quote: '#8b949e', headingColor: '#58a6ff', boldColor: '#7ee787', codeBg: '#161b22' },
+  sepia: { bg: '#f4ecd8', text: '#5c4b37', accent: '#8b4513', quote: '#7a6a5a', headingColor: '#8b4513', boldColor: '#a0522d', codeBg: '#e8dcc8' },
+  pink: { bg: '#fff0f5', text: '#4a4a4a', accent: '#ff69b4', quote: '#888888', headingColor: '#ff69b4', boldColor: '#db7093', codeBg: '#ffe4ec' },
+  mint: { bg: '#f0fff4', text: '#2d3748', accent: '#38a169', quote: '#718096', headingColor: '#276749', boldColor: '#2f855a', codeBg: '#e0f5e8' },
+  ocean: { bg: '#f0f9ff', text: '#1e3a5f', accent: '#0077b6', quote: '#64748b', headingColor: '#0077b6', boldColor: '#00b4d8', codeBg: '#e0f0fa' },
+  lavender: { bg: '#faf5ff', text: '#44337a', accent: '#805ad5', quote: '#718096', headingColor: '#6b46c1', boldColor: '#9f7aea', codeBg: '#f0e8fa' },
+}
+
+export const fontOptions = [
+  'PingFang SC',
+  'Microsoft YaHei',
+  'Smiley Sans',
+  'Source Han Serif SC VF',
+  'Helvetica Neue',
+  'Arial',
+  'Georgia',
+  'Times New Roman',
+]
+
+export const defaultConfig: PageConfig = {
+  fontFamily: 'PingFang SC',
+  fontSize: 16,
+  lineHeight: 1.8,
+  pageMargin: 40,
+  pageWidth: 400,
+  pageHeight: 600,
+  theme: 'light',
+  textColor: '#333333',
+  bgColor: '#ffffff',
+  showPageNumber: false,
+  pageNumberPosition: 'bottom-center',
+  showPageLines: false,
+  coverFontFamily: 'Source Han Serif SC VF',
+  coverFontSize: 36,
+  coverColor: '#e74c3c',
+  headingColor: '#e74c3c',
+  boldColor: '#d35400',
+  exportScale: 2,
+  exportFormat: 'png',
+}
+
+export const STORAGE_KEY = 'md-paged-config'

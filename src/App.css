@@ -1,21 +1,48 @@
 .app {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   background: #1e1e1e;
   color: #fff;
   overflow: hidden;
 }
 
-/* Resizer */
-.resizer {
-  width: 4px;
-  background: #333;
-  cursor: col-resize;
-  transition: background 0.2s;
+/* App Header */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 40px;
+  background: #2d2d2d;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
 }
 
-.resizer:hover {
-  background: #e74c3c;
+.app-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: #e74c3c;
+}
+
+.header-collapse {
+  font-size: 12px;
+  padding: 6px 12px;
+  background: #3c3c3c;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+
+.header-collapse:hover {
+  background: #4c4c4c;
+}
+
+/* App Body */
+.app-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
 }
 
 /* Panel Header */
@@ -23,29 +50,24 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 0 12px;
   background: #2d2d2d;
   border-bottom: 1px solid #333;
   font-size: 13px;
   font-weight: 500;
-  min-height: 20px;
+  height: 36px;
+  flex-shrink: 0;
 }
 
 /* Config Panel */
 .config-panel {
   display: flex;
   flex-direction: column;
+  width: 280px;
   background: #252526;
-  transition: width 0.2s;
   overflow: hidden;
-}
-
-.config-panel.collapsed {
-  min-width: 48px;
-}
-
-.config-panel.collapsed .panel-header {
-  justify-content: center;
+  border-left: 1px solid #333;
+  flex-shrink: 0;
 }
 
 .collapse-btn {
@@ -212,12 +234,12 @@
   gap: 6px;
 }
 
-.export-row .export-btn {
+.export-row .export-btn,
+.export-row .export-select {
   flex: 1;
 }
 
-.scale-select {
-  width: 50px;
+.export-select {
   padding: 6px 4px;
   background: #3c3c3c;
   border: 1px solid #555;
@@ -225,6 +247,28 @@
   color: #ccc;
   font-size: 12px;
   cursor: pointer;
+}
+
+/* Cover row: font 50%, size 25%, color 25% */
+.cover-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cover-row label.flex-2 {
+  flex: 2 !important;
+  min-width: 0;
+}
+
+.cover-row label.flex-1 {
+  flex: 1 !important;
+  min-width: 0;
+}
+
+.cover-row select,
+.cover-row input {
+  width: 100%;
+  min-width: 0;
 }
 
 /* Main Content */

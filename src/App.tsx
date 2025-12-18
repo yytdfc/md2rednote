@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { marked } from 'marked'
 import html2canvas from 'html2canvas'
 import './App.css'
+import exampleMarkdown from './example.md?raw'
 
 interface PageConfig {
   fontFamily: string
@@ -10,15 +11,17 @@ interface PageConfig {
   pageMargin: number
   pageWidth: number
   pageHeight: number
-  theme: 'light' | 'dark' | 'sepia' | 'pink'
+  theme: 'light' | 'cream' | 'paper' | 'dark' | 'midnight' | 'sepia' | 'pink' | 'mint' | 'ocean' | 'lavender'
+  textColor: string
+  bgColor: string
   showPageNumber: boolean
   pageNumberPosition: 'bottom-center' | 'bottom-right' | 'bottom-left'
-  showRunningHeader: boolean
-  preventWidowsOrphans: boolean
-  dropCap: boolean
+  showPageLines: boolean
   coverFontFamily: string
   coverFontSize: number
   coverColor: string
+  headingColor: string
+  boldColor: string
   exportScale: number
   exportFormat: 'png' | 'jpeg' | 'webp'
 }
@@ -31,28 +34,37 @@ const defaultConfig: PageConfig = {
   pageWidth: 400,
   pageHeight: 600,
   theme: 'light',
+  textColor: '#333333',
+  bgColor: '#ffffff',
   showPageNumber: false,
   pageNumberPosition: 'bottom-center',
-  showRunningHeader: false,
-  preventWidowsOrphans: true,
-  dropCap: false,
+  showPageLines: false,
   coverFontFamily: 'Source Han Serif SC VF',
   coverFontSize: 36,
   coverColor: '#e74c3c',
+  headingColor: '#e74c3c',
+  boldColor: '#d35400',
   exportScale: 2,
   exportFormat: 'png',
 }
 
 const themes = {
-  light: { bg: '#ffffff', text: '#333333', accent: '#e74c3c', quote: '#666666' },
-  dark: { bg: '#1a1a2e', text: '#eaeaea', accent: '#ff6b6b', quote: '#aaaaaa' },
-  sepia: { bg: '#f4ecd8', text: '#5c4b37', accent: '#8b4513', quote: '#7a6a5a' },
-  pink: { bg: '#fff0f5', text: '#4a4a4a', accent: '#ff69b4', quote: '#888888' },
+  light: { bg: '#ffffff', text: '#333333', accent: '#e74c3c', quote: '#666666', headingColor: '#e74c3c', boldColor: '#d35400', codeBg: '#f5f5f5' },
+  cream: { bg: '#FFFEF5', text: '#1a1a1a', accent: '#e74c3c', quote: '#666666', headingColor: '#c0392b', boldColor: '#e67e22', codeBg: '#f5f0e6' },
+  paper: { bg: '#F9F6F2', text: '#2d2d2d', accent: '#d35400', quote: '#777777', headingColor: '#c0392b', boldColor: '#e74c3c', codeBg: '#efe9e1' },
+  dark: { bg: '#1a1a2e', text: '#eaeaea', accent: '#ff6b6b', quote: '#aaaaaa', headingColor: '#ff6b6b', boldColor: '#ffa502', codeBg: '#2d2d44' },
+  midnight: { bg: '#0d1117', text: '#c9d1d9', accent: '#58a6ff', quote: '#8b949e', headingColor: '#58a6ff', boldColor: '#7ee787', codeBg: '#161b22' },
+  sepia: { bg: '#f4ecd8', text: '#5c4b37', accent: '#8b4513', quote: '#7a6a5a', headingColor: '#8b4513', boldColor: '#a0522d', codeBg: '#e8dcc8' },
+  pink: { bg: '#fff0f5', text: '#4a4a4a', accent: '#ff69b4', quote: '#888888', headingColor: '#ff69b4', boldColor: '#db7093', codeBg: '#ffe4ec' },
+  mint: { bg: '#f0fff4', text: '#2d3748', accent: '#38a169', quote: '#718096', headingColor: '#276749', boldColor: '#2f855a', codeBg: '#e0f5e8' },
+  ocean: { bg: '#f0f9ff', text: '#1e3a5f', accent: '#0077b6', quote: '#64748b', headingColor: '#0077b6', boldColor: '#00b4d8', codeBg: '#e0f0fa' },
+  lavender: { bg: '#faf5ff', text: '#44337a', accent: '#805ad5', quote: '#718096', headingColor: '#6b46c1', boldColor: '#9f7aea', codeBg: '#f0e8fa' },
 }
 
 const fontOptions = [
   'PingFang SC',
   'Microsoft YaHei',
+  'Smiley Sans',
   'Source Han Serif SC VF',
   'Helvetica Neue',
   'Arial',
@@ -61,44 +73,6 @@ const fontOptions = [
 ]
 
 const STORAGE_KEY = 'md-paged-config'
-
-const exampleMarkdown = `# Markdown to Paged.js 演示
-
-这是一个将 Markdown 渲染成分页内容的小工具。
-
-## 主要功能
-
-- 支持 Markdown 语法解析
-- 使用 Paged.js 进行自动分页
-- 实时预览效果
-
-## 使用方法
-
-1. 在左侧编辑器中输入 Markdown 内容
-2. 右侧会自动渲染成分页效果
-3. 可以调整页面尺寸和样式
-
-## 代码示例
-
-\`\`\`javascript
-const greeting = "Hello, Paged.js!";
-console.log(greeting);
-\`\`\`
-
-## 引用
-
-> Paged.js 让 Web 开发者可以使用熟悉的 HTML 和 CSS 来创建专业的印刷品质文档。
-
-## 更多内容
-
-这里是一些额外的段落，用于测试分页效果。Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-
-## 结语
-
-感谢使用本工具！
-`
 
 function App() {
   const [markdown, setMarkdown] = useState(exampleMarkdown)
@@ -128,43 +102,20 @@ function App() {
         color: ${theme.quote};
       }` : ''
     
-    const runningHeaderStyle = cfg.showRunningHeader ? `
-      @top-center {
-        content: string(chapter-title);
-        font-size: ${cfg.fontSize * 0.75}px;
-        color: ${theme.quote};
-      }` : ''
-    
-    const widowsOrphansStyle = cfg.preventWidowsOrphans ? `
-p { widows: 2; orphans: 2; }` : ''
-    
-    const dropCapStyle = cfg.dropCap ? `
-.content > p:first-of-type::first-letter {
-  float: left;
-  font-size: ${cfg.fontSize * 3}px;
-  line-height: 1;
-  padding-right: 8px;
-  padding-top: 4px;
-  font-weight: bold;
-  color: ${theme.accent};
-}` : ''
 
-    const runningHeaderSet = cfg.showRunningHeader ? `
-h2 { string-set: chapter-title content(text); }` : ''
 
     return `
 @page {
   size: ${cfg.pageWidth}px ${cfg.pageHeight}px;
   margin: ${cfg.pageMargin}px;
   ${pageNumberStyle}
-  ${runningHeaderStyle}
 }
 body {
   font-family: "${cfg.fontFamily}", "Source Han Serif SC VF", "PingFang SC", sans-serif;
   font-size: ${cfg.fontSize}px;
   line-height: ${cfg.lineHeight};
-  color: ${theme.text};
-  background: ${theme.bg};
+  color: ${cfg.textColor};
+  background: ${cfg.bgColor};
 }
 /* Cover page - use named page */
 .cover {
@@ -179,11 +130,32 @@ body {
   @bottom-center { content: none; }
   @bottom-right { content: none; }
 }
-.cover h1 {
+.cover {
+  position: relative;
+  height: ${cfg.pageHeight}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${cfg.pageHeight}px;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: ${cfg.pageMargin}px;
+  right: ${cfg.pageMargin}px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, ${cfg.coverColor}80, transparent);
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  top: 80%;
+  left: ${cfg.pageMargin}px;
+  right: ${cfg.pageMargin}px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, ${cfg.coverColor}80, transparent);
+}
+.cover h1 {
   font-family: "${cfg.coverFontFamily}", "Source Han Serif SC VF", "PingFang SC", sans-serif;
   font-size: ${cfg.coverFontSize}px;
   font-weight: bold;
@@ -191,14 +163,29 @@ body {
   line-height: 1.4;
   text-align: center;
   margin: 0;
-  padding: ${cfg.pageMargin}px;
-  box-sizing: border-box;
+  padding: ${cfg.pageMargin * 1.5}px ${cfg.pageMargin}px;
 }
-h1 { font-size: ${cfg.fontSize * 1.75}px; color: ${theme.accent}; break-after: avoid; margin-top: 0; }
-h2 { font-size: ${cfg.fontSize * 1.375}px; color: ${theme.text}; break-after: avoid; margin-top: 1.5em; ${runningHeaderSet} }
-h3 { font-size: ${cfg.fontSize * 1.125}px; color: ${theme.text}; break-after: avoid; }
-p { margin-bottom: 1em; text-align: justify; }
-${widowsOrphansStyle}
+.cover .quote-left {
+  position: absolute;
+  top: 25%;
+  left: 8%;
+  font-size: ${cfg.coverFontSize * 1.5}px;
+  color: ${cfg.coverColor};
+  opacity: 0.2;
+}
+.cover .quote-right {
+  position: absolute;
+  bottom: 25%;
+  right: 8%;
+  font-size: ${cfg.coverFontSize * 1.5}px;
+  color: ${cfg.coverColor};
+  opacity: 0.2;
+}
+h1 { font-size: ${cfg.fontSize * 1.75}px; color: ${cfg.headingColor}; break-after: avoid; margin-top: 0; }
+h2 { font-size: ${cfg.fontSize * 1.375}px; color: ${cfg.headingColor}; break-after: avoid; margin-top: 1.5em; }
+h3 { font-size: ${cfg.fontSize * 1.125}px; color: ${cfg.headingColor}; break-after: avoid; }
+strong, b { color: ${cfg.boldColor}; }
+p { margin-bottom: 1em; text-align: justify; widows: 2; orphans: 2; }
 ul, ol { margin: 1em 0; padding-left: 2em; }
 li { margin-bottom: 0.5em; break-inside: avoid; }
 blockquote {
@@ -210,7 +197,7 @@ blockquote {
   break-inside: avoid;
 }
 pre {
-  background: ${cfg.theme === 'dark' ? '#2d2d44' : '#f5f5f5'};
+  background: ${theme.codeBg};
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;
@@ -219,14 +206,29 @@ pre {
 }
 code {
   font-family: 'Monaco', 'Menlo', monospace;
-  background: ${cfg.theme === 'dark' ? '#2d2d44' : '#f5f5f5'};
+  background: ${theme.codeBg};
   padding: 2px 6px;
   border-radius: 4px;
   font-size: ${cfg.fontSize * 0.875}px;
 }
 pre code { background: none; padding: 0; }
 .page-break { break-after: page; }
-${dropCapStyle}
+${cfg.showPageLines ? `
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::before,
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::after {
+  content: '';
+  position: absolute;
+  left: ${cfg.pageMargin}px;
+  right: ${cfg.pageMargin}px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, ${cfg.headingColor}60, transparent);
+}
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::before {
+  top: ${cfg.pageMargin * 0.7}px;
+}
+.pagedjs_page:not(.pagedjs_first_page) .pagedjs_pagebox::after {
+  bottom: ${cfg.pageMargin}px;
+}` : ''}
 `
   }, [])
 
@@ -238,7 +240,7 @@ ${dropCapStyle}
       
       let htmlContent = marked.parse(markdown) as string
       // Wrap first h1 in a cover section
-      htmlContent = htmlContent.replace(/<h1>(.*?)<\/h1>/, '<section class="cover"><h1>$1</h1></section>')
+      htmlContent = htmlContent.replace(/<h1>(.*?)<\/h1>/, '<section class="cover"><span class="quote-left">「</span><h1>$1</h1><span class="quote-right">」</span></section>')
       // Convert <hr> to page break
       htmlContent = htmlContent.replace(/<hr\s*\/?>/g, '<div class="page-break"></div>')
       // Wrap remaining content for drop cap styling
@@ -256,7 +258,6 @@ ${dropCapStyle}
       const iframeDoc = newIframe.contentDocument || newIframe.contentWindow?.document
       if (!iframeDoc) return
 
-      const theme = themes[config.theme]
       const styles = generateStyles(config)
 
 
@@ -276,7 +277,7 @@ ${dropCapStyle}
               justify-content: center;
             }
             .pagedjs_page {
-              background: ${theme.bg};
+              background: ${config.bgColor};
               box-shadow: 0 4px 12px rgba(0,0,0,0.3);
               flex-shrink: 0;
             }
@@ -495,12 +496,54 @@ ${dropCapStyle}
                 </label>
                 <label>
                   主题
-                  <select value={config.theme} onChange={e => updateConfig('theme', e.target.value)}>
+                  <select value={config.theme} onChange={e => {
+                    const newTheme = e.target.value as PageConfig['theme']
+                    const themeColors = themes[newTheme]
+                    setConfig(prev => ({
+                      ...prev,
+                      theme: newTheme,
+                      textColor: themeColors.text,
+                      bgColor: themeColors.bg,
+                      headingColor: themeColors.headingColor,
+                      boldColor: themeColors.boldColor,
+                      coverColor: themeColors.headingColor,
+                    }))
+                  }}>
                     <option value="light">浅色</option>
+                    <option value="cream">象牙</option>
+                    <option value="paper">纸张</option>
                     <option value="dark">深色</option>
+                    <option value="midnight">午夜</option>
                     <option value="sepia">复古</option>
                     <option value="pink">粉色</option>
+                    <option value="mint">薄荷</option>
+                    <option value="ocean">海洋</option>
+                    <option value="lavender">薰衣草</option>
                   </select>
+                </label>
+              </div>
+              <div className="config-row">
+                <label>
+                  字体色
+                  <input type="color" value={config.textColor} 
+                    onChange={e => updateConfig('textColor', e.target.value)} />
+                </label>
+                <label>
+                  背景色
+                  <input type="color" value={config.bgColor} 
+                    onChange={e => updateConfig('bgColor', e.target.value)} />
+                </label>
+              </div>
+              <div className="config-row">
+                <label>
+                  标题色
+                  <input type="color" value={config.headingColor} 
+                    onChange={e => updateConfig('headingColor', e.target.value)} />
+                </label>
+                <label>
+                  加粗色
+                  <input type="color" value={config.boldColor} 
+                    onChange={e => updateConfig('boldColor', e.target.value)} />
                 </label>
               </div>
             </div>
@@ -542,16 +585,8 @@ ${dropCapStyle}
                   )}
                 </label>
                 <label className="checkbox-label">
-                  <input type="checkbox" checked={config.showRunningHeader} onChange={e => updateConfig('showRunningHeader', e.target.checked)} />
-                  章节标题
-                </label>
-                <label className="checkbox-label">
-                  <input type="checkbox" checked={config.preventWidowsOrphans} onChange={e => updateConfig('preventWidowsOrphans', e.target.checked)} />
-                  防孤行
-                </label>
-                <label className="checkbox-label">
-                  <input type="checkbox" checked={config.dropCap} onChange={e => updateConfig('dropCap', e.target.checked)} />
-                  首字下沉
+                  <input type="checkbox" checked={config.showPageLines} onChange={e => updateConfig('showPageLines', e.target.checked)} />
+                  页面线条
                 </label>
               </div>
             </div>

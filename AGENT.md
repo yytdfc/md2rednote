@@ -1,4 +1,4 @@
-# markdown2rednote - Claude Context
+# md2rednote - Claude Context
 
 ## Project Overview
 

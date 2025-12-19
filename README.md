@@ -1,8 +1,8 @@
-# Markdown2RedNote
+# md2rednote
 
 将 Markdown 长文一键生成小红书图片的工具。
 
-![界面展示](https://raw.githubusercontent.com/yytdfc/markdown2rednote/main/assets/main_page.webp)
+![界面展示](https://raw.githubusercontent.com/yytdfc/md2rednote/main/assets/main_page.webp)
 
 ## 安装
 
@@ -15,8 +15,8 @@ curl -fsSL https://bun.sh/install | bash
 克隆并安装依赖：
 
 ```bash
-git clone https://github.com/yytdfc/markdown2rednote.git
-cd markdown2rednote
+git clone https://github.com/yytdfc/md2rednote.git
+cd md2rednote
 bun install
 ```
 
@@ -41,14 +41,14 @@ bun run dev
 
 ## 使用
 
-1. 左侧配置面板调整样式（可折叠）
-2. 中间编辑 Markdown 内容
-3. 右侧实时预览分页效果
+1. 左侧编辑 Markdown 内容
+2. 中间实时预览分页效果
+3. 右侧配置面板调整样式（可折叠）
 4. 点击「导出图片」选择目录保存
 
 ## 主题展示
 
-![主题展示](https://raw.githubusercontent.com/yytdfc/markdown2rednote/main/assets/themes_showcase.webp)
+![主题展示](https://raw.githubusercontent.com/yytdfc/md2rednote/main/assets/themes_showcase.webp)
 
 ## 相关资源
 

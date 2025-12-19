@@ -101,7 +101,8 @@ pre {
   background: ${theme.codeBg};
   padding: 16px;
   border-radius: 8px;
-  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
   break-inside: avoid;
   font-size: ${cfg.fontSize * 0.875}px;
 }
@@ -113,6 +114,8 @@ code {
   font-size: ${cfg.fontSize * 0.875}px;
 }
 pre code { background: none; padding: 0; }
+a { color: inherit; font-style: italic; text-decoration: underline; pointer-events: none; }
+img { max-width: 100%; height: auto; }
 .page-break { break-after: page; }
 ${
   cfg.showPageLines

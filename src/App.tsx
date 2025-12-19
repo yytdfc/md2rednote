@@ -9,7 +9,10 @@ import { generateStyles } from './styles'
 import { ConfigPanel } from './components/ConfigPanel'
 
 function App() {
-  const [markdown, setMarkdown] = useState(exampleMarkdown)
+  const [markdown, setMarkdown] = useState(() => {
+    const saved = localStorage.getItem('md-paged-content')
+    return saved ?? exampleMarkdown
+  })
   const [config, setConfig] = useState<PageConfig>(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     return saved ? { ...defaultConfig, ...JSON.parse(saved) } : defaultConfig
@@ -23,6 +26,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(config))
   }, [config])
+
+  useEffect(() => {
+    localStorage.setItem('md-paged-content', markdown)
+  }, [markdown])
 
   useEffect(() => {
     if (!markdown) return

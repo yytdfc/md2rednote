@@ -38,14 +38,16 @@ src/
 - `App.tsx` - Main logic: markdown parsing, iframe rendering, image export
 
 ### Configuration System
-- Stored in localStorage (`md-paged-config`)
-- Import/export as JSON
+- Config stored in localStorage (`md-paged-config`)
+- Markdown content stored in localStorage (`md-paged-content`)
+- Import/export config as JSON
 - Theme switching auto-applies coordinated colors (text, bg, heading, bold, cover)
 
 ### Cover Page
 - First `<h1>` becomes cover page with decorative elements
 - Uses Paged.js named page (`@page cover`)
-- Decorative quotes「」and gradient lines at 20%/80% positions
+- Decorative gradient lines at 20%/80% positions
+- Page numbers hidden on cover
 
 ### Rendering Flow
 1. Markdown → HTML via `marked`

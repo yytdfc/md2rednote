@@ -56,6 +56,10 @@ bun run dev
 - [思源宋体 Source Han Serif](https://github.com/adobe-fonts/source-han-serif/tree/release/)
 - [得意黑 Smiley Sans](https://github.com/atelier-anchor/smiley-sans)
 
+## Vibe Coding
+
+项目包含 `AGENT.md` 文件，可供 AI 开发工具（如 Cursor、Claude）加载以快速理解项目结构和开发规范。
+
 ## License
 
 [MIT](LICENSE)

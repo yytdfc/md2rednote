@@ -44,9 +44,6 @@ export const defaultConfig: PageConfig = {
   boldColor: '#c0392b',
   exportScale: 4,
   exportFormat: 'webp',
-  showRunningHeader: false,
-  preventWidowsOrphans: true,
-  dropCap: false,
 }
 
 export const STORAGE_KEY = 'md-paged-config'

@@ -66,10 +66,10 @@ body {
   background: linear-gradient(90deg, ${cfg.coverColor}80, transparent);
 }
 .cover-line-top {
-  top: 20%;
+  top: 15%;
 }
 .cover-line-bottom {
-  top: 80%;
+  top: 85%;
 }
 .cover h1 {
   font-family: "${cfg.coverFontFamily}", "Source Han Serif SC VF", "PingFang SC", sans-serif;

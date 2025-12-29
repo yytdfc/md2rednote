@@ -1,5 +1,6 @@
 import type { PageConfig } from '../types'
 import { themes, fontOptions } from '../config'
+import { ColorInput } from './ColorInput'
 
 interface ConfigPanelProps {
   config: PageConfig
@@ -62,10 +63,9 @@ export function ConfigPanel({
             </label>
             <label className="flex-1">
               颜色
-              <input
-                type="color"
+              <ColorInput
                 value={config.coverColor}
-                onChange={(e) => updateConfig('coverColor', e.target.value)}
+                onChange={(v) => updateConfig('coverColor', v)}
               />
             </label>
           </div>
@@ -99,10 +99,9 @@ export function ConfigPanel({
             </label>
             <label className="flex-1">
               字体色
-              <input
-                type="color"
+              <ColorInput
                 value={config.textColor}
-                onChange={(e) => updateConfig('textColor', e.target.value)}
+                onChange={(v) => updateConfig('textColor', v)}
               />
             </label>
           </div>
@@ -161,34 +160,30 @@ export function ConfigPanel({
           <div className="config-row">
             <label>
               背景色
-              <input
-                type="color"
+              <ColorInput
                 value={config.bgColor}
-                onChange={(e) => updateConfig('bgColor', e.target.value)}
+                onChange={(v) => updateConfig('bgColor', v)}
               />
             </label>
             <label>
               标题色
-              <input
-                type="color"
+              <ColorInput
                 value={config.headingColor}
-                onChange={(e) => updateConfig('headingColor', e.target.value)}
+                onChange={(v) => updateConfig('headingColor', v)}
               />
             </label>
             <label>
               加粗色
-              <input
-                type="color"
+              <ColorInput
                 value={config.boldColor}
-                onChange={(e) => updateConfig('boldColor', e.target.value)}
+                onChange={(v) => updateConfig('boldColor', v)}
               />
             </label>
             <label>
               代码背景
-              <input
-                type="color"
+              <ColorInput
                 value={config.codeBg}
-                onChange={(e) => updateConfig('codeBg', e.target.value)}
+                onChange={(v) => updateConfig('codeBg', v)}
               />
             </label>
           </div>

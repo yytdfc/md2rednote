@@ -20,7 +20,10 @@ function App() {
   const [isRendering, setIsRendering] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const [configCollapsed, setConfigCollapsed] = useState(false)
-  const [previewZoom, setPreviewZoom] = useState(100)
+  const [previewZoom, setPreviewZoom] = useState(() => {
+    const saved = localStorage.getItem('md-paged-zoom')
+    return saved ? parseInt(saved, 10) : 100
+  })
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
@@ -30,6 +33,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('md-paged-content', markdown)
   }, [markdown])
+
+  useEffect(() => {
+    localStorage.setItem('md-paged-zoom', String(previewZoom))
+  }, [previewZoom])
 
   useEffect(() => {
     if (!markdown) return

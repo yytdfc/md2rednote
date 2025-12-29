@@ -65,7 +65,7 @@
   flex-direction: column;
   width: 280px;
   background: #252526;
-  overflow: hidden;
+  overflow: visible;
   border-left: 1px solid #333;
   flex-shrink: 0;
 }
@@ -86,6 +86,7 @@
 .config-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: visible;
   padding: 12px;
 }
 
@@ -379,4 +380,78 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* Color Input with Brightness Slider */
+.color-input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 24px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.color-picker-popup {
+  position: fixed;
+  z-index: 9999;
+  background: #2d2d2d;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  width: 200px;
+}
+
+.color-picker-popup input[type="color"] {
+  width: 100%;
+  height: 80px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.brightness-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #aaa;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.brightness-slider {
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, #000, #fff);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.brightness-value {
+  width: 24px;
+  text-align: right;
+  font-size: 11px;
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+.brightness-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 1px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
 }

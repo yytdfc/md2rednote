@@ -84,6 +84,7 @@ function App() {
               gap: 20px;
               justify-content: flex-start;
               align-content: flex-start;
+              padding-bottom: ${config.pageHeight}px;
             }
             .pagedjs_page {
               background: ${config.bgColor};
